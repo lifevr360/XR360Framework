@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Main/Main360.unity
-    guid: 4101801909de8a2449fa53c07c57de45
+    path: Assets/Scenes/Fairmont/Fairmont_Android_WebGL.unity
+    guid: 8e7e8841cfd69394381a17738bf95515
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: bfa1182bd221b4ca89619141f66f1260, type: 2}
     Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: dc5a169419fa04987b057f65238cf3ba, type: 2}
