@@ -28,7 +28,7 @@ public class VideoManager : MonoBehaviour
     #region Unity Methods
     private void Start()
     {
-        PlayVideo(0); // Play the first video
+        //PlayVideo(0); // Play the first video
     }
     #endregion
 

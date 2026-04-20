@@ -6,10 +6,13 @@ public class LookAround : MonoBehaviour
     public float sensitivity = 12f;
 
     [Header("Rotation Limits")]
-    public float minX = -360f; // Min horizontal rotation
-    public float maxX = 360f;  // Max horizontal rotation
-    public float minY = -60f; // Min vertical rotation
-    public float maxY = 60f;  // Max vertical rotation
+    public float minX = -360f;
+    public float maxX = 360f;
+    public float minY = -60f;
+    public float maxY = 60f;
+
+    //  Shared flag to block camera when model is interacting
+    public static bool isModelInteracting = false;
 
     private float rotationX = 0f;
     private float rotationY = 0f;
@@ -17,6 +20,14 @@ public class LookAround : MonoBehaviour
     private Vector2 lastMousePosition;
     private Vector2 lastTouchPosition;
     private bool isTouching = false;
+
+    void Start()
+    {
+        // IMPORTANT: start from current camera rotation (no reset)
+        Vector3 rot = transform.eulerAngles;
+        rotationX = rot.y;
+        rotationY = rot.x;
+    }
 
     void Update()
     {
@@ -29,16 +40,18 @@ public class LookAround : MonoBehaviour
 
     void HandleMouseLook()
     {
-        if (Input.GetMouseButtonDown(0)) // Left click pressed
+        if (isModelInteracting) return; //  BLOCK when model active
+
+        if (Input.GetMouseButtonDown(0))
         {
             lastMousePosition = Input.mousePosition;
         }
-        else if (Input.GetMouseButton(0)) // Left click held
+        else if (Input.GetMouseButton(0))
         {
             Vector2 mouseDelta = (Vector2)Input.mousePosition - lastMousePosition;
             lastMousePosition = Input.mousePosition;
 
-            float mouseX = mouseDelta.x * sensitivity * 0.01f; // Adjust for smooth movement
+            float mouseX = mouseDelta.x * sensitivity * 0.01f;
             float mouseY = mouseDelta.y * sensitivity * 0.01f;
 
             rotationX += mouseX;
@@ -53,6 +66,8 @@ public class LookAround : MonoBehaviour
 
     void HandleTouchLook()
     {
+        if (isModelInteracting) return; // BLOCK when model active
+
         if (Input.touchCount == 1)
         {
             Touch touch = Input.GetTouch(0);
