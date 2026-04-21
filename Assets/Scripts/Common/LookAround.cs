@@ -45,6 +45,7 @@ public class LookAround : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             lastMousePosition = Input.mousePosition;
+            return;
         }
         else if (Input.GetMouseButton(0))
         {
@@ -76,6 +77,7 @@ public class LookAround : MonoBehaviour
             {
                 lastTouchPosition = touch.position;
                 isTouching = true;
+                return;
             }
             else if (touch.phase == TouchPhase.Moved && isTouching)
             {

@@ -13,6 +13,11 @@ public class ModelInteractionController : MonoBehaviour
     [Header("Clamp Control")]
     public bool useClamp = true;
 
+    [Header("Per Axis Clamp Control")]
+    public bool clampXEnabled = true;
+    public bool clampYEnabled = true;
+    public bool clampZEnabled = true;
+
     [Header("Rotation Clamp")]
     public Vector2 clampX = new Vector2(-180, 180);
     public Vector2 clampY = new Vector2(-180, 180);
@@ -65,6 +70,7 @@ public class ModelInteractionController : MonoBehaviour
                 isDragging = true;
                 lastInputPos = Input.mousePosition;
                 LookAround.isModelInteracting = true;
+                return;
             }
         }
 
@@ -107,6 +113,7 @@ public class ModelInteractionController : MonoBehaviour
                 isDragging = true;
                 lastInputPos = touch.position;
                 LookAround.isModelInteracting = true;
+                return;
             }
             else if (touch.phase == TouchPhase.Moved && isDragging)
             {
@@ -153,13 +160,13 @@ public class ModelInteractionController : MonoBehaviour
 
         if (useClamp)
         {
-            if (allowX)
+            if (allowX && clampXEnabled)
                 currentRotation.x = Mathf.Clamp(currentRotation.x, clampX.x, clampX.y);
 
-            if (allowY)
+            if (allowY && clampYEnabled)
                 currentRotation.y = Mathf.Clamp(currentRotation.y, clampY.x, clampY.y);
 
-            if (allowZ)
+            if (allowZ && clampZEnabled)
                 currentRotation.z = Mathf.Clamp(currentRotation.z, clampZ.x, clampZ.y);
         }
 
