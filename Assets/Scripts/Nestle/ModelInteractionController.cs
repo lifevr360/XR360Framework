@@ -1,206 +1,145 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class ModelInteractionController : MonoBehaviour
+public class ModelInteractionController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    [Header("Rotation Axis Control")]
-    public bool allowX = true;
-    public bool allowY = true;
-    public bool allowZ = false;
+    [Header("Rotation Settings")]
+    public float rotationSpeed = 100f;
 
-    [Header("Rotation Speed")]
-    public float rotationSpeed = 5f;
+    public float minX = -45f;
+    public float maxX = 45f;
 
-    [Header("Clamp Control")]
-    public bool useClamp = true;
+    public float minY = -180f;
+    public float maxY = 180f;
 
-    [Header("Per Axis Clamp Control")]
-    public bool clampXEnabled = true;
-    public bool clampYEnabled = true;
-    public bool clampZEnabled = true;
+    private float currentX;
+    private float currentY;
 
-    [Header("Rotation Clamp")]
-    public Vector2 clampX = new Vector2(-180, 180);
-    public Vector2 clampY = new Vector2(-180, 180);
-    public Vector2 clampZ = new Vector2(-180, 180);
+    private bool rotateLeft;
+    private bool rotateRight;
+    private bool rotateUp;
+    private bool rotateDown;
 
-    [Header("Zoom (Scale-Based)")]
-    public float zoomSpeed = 0.01f;
+    [Header("Zoom Settings")]
+    public float zoomSpeed = 0.5f;
     public float minScale = 0.5f;
     public float maxScale = 2f;
 
-    [Header("References")]
-    public Camera targetCamera;
-
-    [Header("Default State")]
-    public Vector3 defaultRotation;
-
-    private Vector3 currentRotation;
-    private Vector3 initialScale;
-
-    private bool isDragging = false;
-    private Vector2 lastInputPos;
+    private bool isHovering = false;
 
     void Start()
     {
-        Vector3 euler = transform.eulerAngles;
+        Vector3 angles = transform.localEulerAngles;
 
-        currentRotation.x = NormalizeAngle(euler.x);
-        currentRotation.y = NormalizeAngle(euler.y);
-        currentRotation.z = NormalizeAngle(euler.z);
-
-        defaultRotation = currentRotation;
-        initialScale = transform.localScale;
+        currentX = angles.x;
+        currentY = angles.y;
     }
 
     void Update()
     {
-#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBGL
-        HandleMouse();
-#elif UNITY_ANDROID || UNITY_IOS
-        HandleTouch();
-#endif
+        HandleRotation();
+        HandleMouseZoom();
+        HandleTouchZoom();
     }
 
-    void HandleMouse()
+    // ---------------- ROTATION ----------------
+
+    void HandleRotation()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (IsPointerOverModel(Input.mousePosition))
-            {
-                isDragging = true;
-                lastInputPos = Input.mousePosition;
-                LookAround.isModelInteracting = true;
-                return;
-            }
-        }
+        if (rotateLeft)
+            currentY -= rotationSpeed * Time.deltaTime;
 
-        if (Input.GetMouseButtonUp(0))
-        {
-            isDragging = false;
-            LookAround.isModelInteracting = false;
-        }
+        if (rotateRight)
+            currentY += rotationSpeed * Time.deltaTime;
 
-        if (isDragging && Input.GetMouseButton(0))
-        {
-            Vector2 delta = (Vector2)Input.mousePosition - lastInputPos;
-            lastInputPos = Input.mousePosition;
+        if (rotateUp)
+            currentX -= rotationSpeed * Time.deltaTime;
 
-            RotateModel(delta);
-        }
+        if (rotateDown)
+            currentX += rotationSpeed * Time.deltaTime;
+
+        ApplyRotation();
+    }
+
+    void ApplyRotation()
+    {
+        currentX = ClampAngle(currentX, minX, maxX);
+        currentY = ClampAngle(currentY, minY, maxY);
+
+        transform.localRotation = Quaternion.Euler(currentX, currentY, 0f);
+    }
+
+    float ClampAngle(float angle, float min, float max)
+    {
+        if (angle > 180) angle -= 360;
+        return Mathf.Clamp(angle, min, max);
+    }
+
+    // ---------------- BUTTON EVENTS ----------------
+
+    public void OnLeftDown() => rotateLeft = true;
+    public void OnLeftUp() => rotateLeft = false;
+
+    public void OnRightDown() => rotateRight = true;
+    public void OnRightUp() => rotateRight = false;
+
+    public void OnUpDown() => rotateUp = true;
+    public void OnUpUp() => rotateUp = false;
+
+    public void OnDownDown() => rotateDown = true;
+    public void OnDownUp() => rotateDown = false;
+
+    // ---------------- ZOOM ----------------
+
+    void HandleMouseZoom()
+    {
+        if (!isHovering) return;
 
         float scroll = Input.GetAxis("Mouse ScrollWheel");
-        if (scroll != 0 && IsPointerOverModel(Input.mousePosition))
-        {
-            LookAround.isModelInteracting = true;
-            Zoom(scroll * 100f);
-        }
 
-        if (!Input.GetMouseButton(0) && scroll == 0)
+        if (Mathf.Abs(scroll) > 0.01f)
         {
-            LookAround.isModelInteracting = false;
+            Zoom(scroll * zoomSpeed);
         }
     }
 
-    void HandleTouch()
+    void HandleTouchZoom()
     {
-        if (Input.touchCount == 1)
-        {
-            Touch touch = Input.GetTouch(0);
+        if (Input.touchCount != 2) return;
 
-            if (touch.phase == TouchPhase.Began &&
-                IsPointerOverModel(touch.position))
-            {
-                isDragging = true;
-                lastInputPos = touch.position;
-                LookAround.isModelInteracting = true;
-                return;
-            }
-            else if (touch.phase == TouchPhase.Moved && isDragging)
-            {
-                RotateModel(touch.deltaPosition);
-            }
-            else if (touch.phase == TouchPhase.Ended)
-            {
-                isDragging = false;
-                LookAround.isModelInteracting = false;
-            }
-        }
+        Touch t1 = Input.GetTouch(0);
+        Touch t2 = Input.GetTouch(1);
 
-        if (Input.touchCount == 2)
-        {
-            LookAround.isModelInteracting = true;
+        Vector2 prevPos1 = t1.position - t1.deltaPosition;
+        Vector2 prevPos2 = t2.position - t2.deltaPosition;
 
-            Touch t1 = Input.GetTouch(0);
-            Touch t2 = Input.GetTouch(1);
+        float prevMagnitude = (prevPos1 - prevPos2).magnitude;
+        float currentMagnitude = (t1.position - t2.position).magnitude;
 
-            float prevDist = (t1.position - t1.deltaPosition -
-                              (t2.position - t2.deltaPosition)).magnitude;
+        float difference = currentMagnitude - prevMagnitude;
 
-            float currDist = (t1.position - t2.position).magnitude;
-
-            float delta = currDist - prevDist;
-
-            Zoom(delta);
-        }
-
-        if (Input.touchCount == 0)
-        {
-            LookAround.isModelInteracting = false;
-        }
+        Zoom(difference * zoomSpeed * 0.01f);
     }
 
-    void RotateModel(Vector2 delta)
+    void Zoom(float increment)
     {
-        float rotX = -delta.y * rotationSpeed * 0.02f;
-        float rotY = -delta.x * rotationSpeed * 0.02f;
-
-        if (allowX) currentRotation.x += rotX;
-        if (allowY) currentRotation.y += rotY;
-        if (allowZ) currentRotation.z += rotY;
-
-        if (useClamp)
-        {
-            if (allowX && clampXEnabled)
-                currentRotation.x = Mathf.Clamp(currentRotation.x, clampX.x, clampX.y);
-
-            if (allowY && clampYEnabled)
-                currentRotation.y = Mathf.Clamp(currentRotation.y, clampY.x, clampY.y);
-
-            if (allowZ && clampZEnabled)
-                currentRotation.z = Mathf.Clamp(currentRotation.z, clampZ.x, clampZ.y);
-        }
-
-        transform.rotation = Quaternion.Euler(currentRotation);
-    }
-
-    void Zoom(float delta)
-    {
-        float scaleChange = delta * zoomSpeed;
-
-        Vector3 newScale = transform.localScale + Vector3.one * scaleChange;
+        Vector3 newScale = transform.localScale + Vector3.one * increment;
 
         float clamped = Mathf.Clamp(newScale.x, minScale, maxScale);
+
         transform.localScale = new Vector3(clamped, clamped, clamped);
     }
 
-    bool IsPointerOverModel(Vector2 screenPos)
-    {
-        if (targetCamera == null) return false;
+    // ---------------- HOVER ----------------
 
-        Ray ray = targetCamera.ScreenPointToRay(screenPos);
-        return Physics.Raycast(ray, out RaycastHit hit) && hit.transform == transform;
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        Debug.Log("Pointer entered");
+        isHovering = true;
     }
 
-    public void ResetModel()
+    public void OnPointerExit(PointerEventData eventData)
     {
-        currentRotation = defaultRotation;
-        transform.rotation = Quaternion.Euler(currentRotation);
-        transform.localScale = initialScale;
-    }
-
-    float NormalizeAngle(float angle)
-    {
-        if (angle > 180f) angle -= 360f;
-        return angle;
+        isHovering = false;
     }
 }
