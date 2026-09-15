@@ -5,34 +5,62 @@ using UnityEngine.Video;
 
 public class VideoManager : MonoBehaviour
 {
-    #region Public Variables
-    [System.Serializable]
-    public class VideoData
-    {
-        public string videoPath;       // Local video file path
-        public AudioClip hindiAudioClip;  // Hindi audio clip
-        public AudioClip englishAudioClip; // English audio clip
-    }
+    #region Public Variables / Structures
     public enum Language { Hindi, English }
-    [Header("Video Settings")]
+    public enum VideoSourceMode { URL, LocalClips } // New feature: Select source mode
+
+    [Header("References")]
     public VideoPlayer videoPlayer;
+    public VideoPlayer firstvideoPlayer;
     public AudioSource voiceOverAudioSource;
-    public List<VideoData> videoList;
+    public Mouselook mouseLook; // Kept exactly as your original script
+    public Transform fps;
+
+    [Header("Video Source Settings")]
+    public VideoSourceMode videoSourceMode = VideoSourceMode.URL; // Toggle between URL and Local
+
+    [Header("URL Settings (Used if Mode is URL)")]
+    [Tooltip("Ensure this ends with a forward slash /")]
+    public string rootURL = "https://moxyblr1.s3.ap-south-1.amazonaws.com/Nestle/";
+    public string fileExtension = ".mp4";
+
+    [Header("Local Video Clips (Used if Mode is LocalClips)")]
+    [Tooltip("Drag and drop your baked video clips here. Slot 0 matches index 0, etc.")]
+    public List<VideoClip> localVideoClips;
+
+    [Header("Localized Audio Clips")]
+    [Tooltip("Place Hindi audio clips here. Slot 0 matches Video 0, Slot 1 matches Video 1, etc.")]
+    public List<AudioClip> hindiAudioClips;
+    [Tooltip("Place English audio clips here. Slot 0 matches Video 0, Slot 1 matches Video 1, etc.")]
+    public List<AudioClip> englishAudioClips;
     #endregion
 
     #region Private Variables
     private Language selectedLanguage = Language.English; // Default language
     private int currentVideoIndex = -1; // Track the currently playing video
+    private Quaternion defaultRotation;
     #endregion
 
     #region Unity Methods
     private void Start()
     {
-        PlayVideo(0); // Play the first video
+        // Cache camera rotation settings (From your original script)
+        if (fps != null)
+            defaultRotation = fps.localRotation;
+
+        // Apply WebGL Best Practice settings (From your original script)
+        if (videoPlayer != null)
+        {
+            videoPlayer.audioOutputMode = VideoAudioOutputMode.Direct;
+            videoPlayer.playOnAwake = false;
+            videoPlayer.waitForFirstFrame = true;
+        }
+
+        PlayVideo(0); // Play the first video (0) on start
     }
     #endregion
 
-    #region Custom Methods
+    #region Custom Public Methods
     public void SetLanguage(int value)
     {
         selectedLanguage = (Language)value;
@@ -48,72 +76,153 @@ public class VideoManager : MonoBehaviour
             return;
         }
 
-        if (videoIndex < 0 || videoIndex >= videoList.Count)
+        // Clean up firstvideoPlayer if active and playing (From your original script)
+        if (firstvideoPlayer != null && firstvideoPlayer.isPlaying)
         {
-            Debug.LogError("Invalid video index: " + videoIndex);
-            return;
+            firstvideoPlayer.Stop();
+            if (firstvideoPlayer.gameObject != this.gameObject)
+                firstvideoPlayer.gameObject.SetActive(false);
         }
 
         Debug.Log("Stopped coroutines.");
         StopAllCoroutines();
         StopVideoAndAudio();
-        StartCoroutine(StartPlayingVideo(videoIndex));
+        StartCoroutine(StartPlayingVideoRoutine(videoIndex));
     }
 
-    private IEnumerator StartPlayingVideo(int index)
+    public void StopAllVideos()
     {
+        StopAllCoroutines();
+        StopVideoAndAudio();
+        if (firstvideoPlayer != null) firstvideoPlayer.Stop();
+    }
+    #endregion
 
-        videoPlayer.url = videoList[index].videoPath;
+    #region Private Helper Methods & Coroutines
+    private string GetVideoURL(int index)
+    {
+        // Direct URL generation using the index (From your original script)
+        return rootURL + index + fileExtension;
+    }
+
+    private IEnumerator StartPlayingVideoRoutine(int index)
+    {
+        // Stop current playback and reset frame to prevent the "rushing" catch-up effect
+        videoPlayer.Stop();
+        videoPlayer.frame = 0;
+
+        // Check which mode is selected to assign the correct source
+        if (videoSourceMode == VideoSourceMode.URL)
+        {
+            videoPlayer.source = VideoSource.Url;
+            string videoURL = GetVideoURL(index);
+
+            // WebGL-friendly performance workaround: toggle GameObject visibility when setting URL
+            if (videoPlayer.gameObject != this.gameObject)
+            {
+                videoPlayer.gameObject.SetActive(false);
+                yield return null;
+                videoPlayer.url = videoURL;
+                videoPlayer.gameObject.SetActive(true);
+            }
+            else
+            {
+                videoPlayer.url = videoURL;
+            }
+        }
+        else if (videoSourceMode == VideoSourceMode.LocalClips)
+        {
+            videoPlayer.source = VideoSource.VideoClip;
+
+            if (localVideoClips != null && index < localVideoClips.Count && localVideoClips[index] != null)
+            {
+                videoPlayer.clip = localVideoClips[index];
+            }
+            else
+            {
+                Debug.LogError("Local video clip is missing or index is out of bounds for index: " + index);
+                yield break; // Exit early if no video is found
+            }
+        }
+
+        yield return null;
+
         videoPlayer.Prepare();
 
-        while (!videoPlayer.isPrepared)
+        // Safe loop timeout logic
+        float timeout = 0;
+        while (!videoPlayer.isPrepared && timeout < 10f)
         {
+            timeout += Time.deltaTime;
             yield return null;
         }
 
-        AudioClip selectedClip = (selectedLanguage == Language.Hindi) ? videoList[index].hindiAudioClip : videoList[index].englishAudioClip;
-
-
-        if (selectedClip == null)
+        if (videoPlayer.isPrepared)
         {
-            Debug.Log("Playing video with embedded audio.");
-            voiceOverAudioSource.Stop(); // Ensure external audio doesn't play
+            videoPlayer.frame = 0; // Double check reset before play
+
+            // Resolve the audio clip by index dynamically from the language lists
+            AudioClip selectedClip = null;
+            if (selectedLanguage == Language.Hindi && hindiAudioClips != null && index < hindiAudioClips.Count)
+            {
+                selectedClip = hindiAudioClips[index];
+            }
+            else if (selectedLanguage == Language.English && englishAudioClips != null && index < englishAudioClips.Count)
+            {
+                selectedClip = englishAudioClips[index];
+            }
+
+            if (selectedClip == null)
+            {
+                Debug.Log("No localized audio clip found for index " + index + ". Playing video with embedded audio.");
+                if (voiceOverAudioSource != null) voiceOverAudioSource.Stop();
+            }
+            else
+            {
+                Debug.Log("Playing video with external localized audio clip.");
+                PlayVoiceOver(selectedClip);
+            }
+
+            videoPlayer.Play();
+            currentVideoIndex = index;
+
+            if (videoSourceMode == VideoSourceMode.URL)
+                Debug.Log("Playing video from URL: " + videoPlayer.url);
+            else
+                Debug.Log("Playing baked local video: " + videoPlayer.clip.name);
+
+            // Reset player orientation after load finish (From your original script)
+            if (mouseLook != null)
+                mouseLook.ResetRotation(defaultRotation);
         }
         else
         {
-            Debug.Log("Playing video without embedded audio. Using internal audio clip.");
-            PlayVoiceOver(selectedClip);
+            Debug.LogError("Video failed to prepare. Check CORS, URL, or local file.");
         }
-
-        videoPlayer.Play();
-        currentVideoIndex = index;
-        Debug.Log("Playing video from: " + videoList[index].videoPath);
     }
 
     private void PlayVoiceOver(AudioClip clip)
     {
-        if (clip == null)
-        {
-            Debug.LogError("Audio clip is missing for the selected language.");
-            return;
-        }
+        if (clip == null) return;
 
-        voiceOverAudioSource.Stop();
-        voiceOverAudioSource.clip = clip;
-        voiceOverAudioSource.Play();
-        Debug.Log("Playing internal audio.");
+        if (voiceOverAudioSource != null)
+        {
+            voiceOverAudioSource.Stop();
+            voiceOverAudioSource.clip = clip;
+            voiceOverAudioSource.Play();
+            Debug.Log("Playing internal audio.");
+        }
     }
 
     private void StopVideoAndAudio()
     {
-        if (videoPlayer.isPlaying)
+        if (videoPlayer != null && videoPlayer.isPlaying)
         {
             videoPlayer.Stop();
             Debug.Log("Stopped current video.");
         }
 
-
-        if (voiceOverAudioSource.isPlaying)
+        if (voiceOverAudioSource != null && voiceOverAudioSource.isPlaying)
         {
             voiceOverAudioSource.Stop();
         }

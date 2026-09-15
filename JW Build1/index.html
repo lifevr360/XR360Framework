@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>JW Marriott Golfshire</title>
+    <style>
+        /* Ensure the body and html take up 100% of the screen and hide scrollbars */
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        #interaction-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .play-button {
+            width: 80px;
+            height: 80px;
+            border: 3px solid white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .play-triangle {
+            width: 0;
+            height: 0;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-left: 25px solid white;
+            margin-left: 5px;
+        }
+
+        /* Forces the canvas to be full screen on all devices */
+        #unity-canvas {
+            width: 100% !important;
+            height: 100% !important;
+            position: fixed;
+            top: 0;
+            left: 0;
+            /* Restored to your original build background format */
+            background: url('Build/JW Build.jpg') center / cover;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="interaction-overlay">
+        <div class="play-button"><div class="play-triangle"></div></div>
+        <h2>CLICK TO EXPLORE</h2>
+        <p>JW Marriott Experience</p>
+    </div>
+
+    <canvas id="unity-canvas" tabindex="-1"></canvas>
+
+    <script src="Build/JW Build.loader.js"></script>
+    <script>
+        const overlay = document.querySelector('#interaction-overlay');
+        const canvas = document.querySelector("#unity-canvas");
+
+        // Keep mobile optimization for viewports, but styling is globally handled via CSS
+        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+            var meta = document.createElement('meta');
+            meta.name = 'viewport';
+            meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+            document.getElementsByTagName('head')[0].appendChild(meta);
+            document.body.style.textAlign = "left";
+        }
+
+        // Hides the overlay immediately on click
+        overlay.addEventListener('click', function () {
+            overlay.style.display = 'none';
+        });
+
+        // Initialize Unity engine using your original file names and extensions
+        createUnityInstance(canvas, {
+            arguments: [],
+            dataUrl: "Build/JW Build.data",
+            frameworkUrl: "Build/JW Build.framework.js",
+            codeUrl: "Build/JW Build.wasm",
+            streamingAssetsUrl: "StreamingAssets",
+            companyName: "LifeVR",
+            productName: "JW Marriott WebGL",
+            productVersion: "0.1",
+        }).then((unityInstance) => {
+            console.log("Unity instance successfully loaded.");
+        }).catch((message) => {
+            alert(message);
+        });
+    </script>
+</body>
+</html>

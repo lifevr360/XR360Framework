@@ -51,5 +51,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "XR360Framework.sln"
+    "dotnet.defaultSolution": "XR360Framework.slnx"
 }
