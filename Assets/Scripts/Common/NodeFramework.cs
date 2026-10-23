@@ -92,13 +92,12 @@ public class NodeFramework : MonoBehaviour
         if (rootNodes.Contains(node))
         {
             childStack.Clear();
-            activeRootChildren = node.children;
 
-            if (node.HasChildren)
-            {
-                RenderChildren(activeRootChildren);
-                ShowBackground(node.background);
-            }
+            // Childless roots (e.g. EVENTS) count as "at root" so the previous submenu is cleared
+            activeRootChildren = node.HasChildren ? node.children : null;
+
+            RenderChildren(activeRootChildren);
+            ShowBackground(node.background != null ? node.background : rootBackground);
 
             return;
         }
