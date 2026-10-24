@@ -34,16 +34,27 @@ public class NodeFramework : MonoBehaviour
     [Header("Root Background (Optional)")]
     public GameObject rootBackground;
 
+    // Networking hooks: when set (by NetworkSync), clicks are sent to the host
+    // instead of being applied locally. When null, the menu works offline as before.
+    public System.Action<string> onNodeRequested;
+    public System.Action onBackRequested;
+
     // Stack used only for child navigation (never roots)
     private Stack<Node> childStack = new Stack<Node>();
 
     // Stores layer-1 children of currently active root
     private List<Node> activeRootChildren = null;
+    private Node activeRoot = null;
+
+    // Stable path IDs ("0", "0.1", "0.1.3") so every device agrees on which node is which
+    private Dictionary<string, Node> nodesById = new Dictionary<string, Node>();
+    private Dictionary<Node, string> idsByNode = new Dictionary<Node, string>();
 
     // ---------------- UNITY ----------------
 
     void Awake()
     {
+        AssignIds(rootNodes, "");
         InitializeButtons(rootNodes);
 
         // Root buttons are always visible
@@ -60,6 +71,21 @@ public class NodeFramework : MonoBehaviour
 
     // ---------------- INITIALIZATION ----------------
 
+    private void AssignIds(List<Node> nodes, string prefix)
+    {
+        for (int i = 0; i < nodes.Count; i++)
+        {
+            var node = nodes[i];
+            string id = prefix.Length == 0 ? i.ToString() : prefix + "." + i;
+
+            nodesById[id] = node;
+            idsByNode[node] = id;
+
+            if (node.HasChildren)
+                AssignIds(node.children, id);
+        }
+    }
+
     private void InitializeButtons(List<Node> nodes)
     {
         foreach (var node in nodes)
@@ -67,7 +93,7 @@ public class NodeFramework : MonoBehaviour
             if (node.button != null)
             {
                 node.button.onClick.RemoveAllListeners();
-                node.button.onClick.AddListener(() => OnNodeClicked(node));
+                node.button.onClick.AddListener(() => OnNodeButtonClicked(node));
             }
 
             if (node.HasChildren)
@@ -77,13 +103,39 @@ public class NodeFramework : MonoBehaviour
 
     // ---------------- CLICK HANDLING ----------------
 
-    private void OnNodeClicked(Node node)
+    private void OnNodeButtonClicked(Node node)
+    {
+        if (onNodeRequested != null)
+            onNodeRequested(idsByNode[node]);
+        else
+            ApplyNodeClick(node, true);
+    }
+
+    // Wired to the Back button's OnClick
+    public void GoBack()
+    {
+        if (onBackRequested != null)
+            onBackRequested();
+        else
+            ApplyGoBack();
+    }
+
+    public void ApplyNodeClick(string id)
+    {
+        Node node;
+        if (nodesById.TryGetValue(id, out node))
+            ApplyNodeClick(node, true);
+        else
+            Debug.LogWarning("NodeFramework: unknown node id " + id);
+    }
+
+    private void ApplyNodeClick(Node node, bool invokeActions)
     {
         if (node == null)
             return;
 
         // Invoke actions FIRST (if any are wired)
-        if (node.onSelected != null && node.onSelected.GetPersistentEventCount() > 0)
+        if (invokeActions && node.onSelected != null && node.onSelected.GetPersistentEventCount() > 0)
         {
             node.onSelected.Invoke();
         }
@@ -94,6 +146,7 @@ public class NodeFramework : MonoBehaviour
             childStack.Clear();
 
             // Childless roots (e.g. EVENTS) count as "at root" so the previous submenu is cleared
+            activeRoot = node.HasChildren ? node : null;
             activeRootChildren = node.HasChildren ? node.children : null;
 
             RenderChildren(activeRootChildren);
@@ -111,8 +164,7 @@ public class NodeFramework : MonoBehaviour
         }
     }
 
-
-    public void GoBack()
+    public void ApplyGoBack()
     {
         // Case 1: already at root only
         if (childStack.Count == 0 && activeRootChildren == null)
@@ -139,9 +191,58 @@ public class NodeFramework : MonoBehaviour
         }
 
         // Case 3: back from layer 1 to root only
+        activeRoot = null;
         activeRootChildren = null;
         RenderChildren(null);
         ShowBackground(rootBackground);
+    }
+
+    // ---------------- STATE (for network sync) ----------------
+
+    // ID of the deepest open menu, or "" when only the root buttons are showing
+    public string CurrentMenuId
+    {
+        get
+        {
+            if (childStack.Count > 0)
+                return idsByNode[childStack.Peek()];
+            if (activeRoot != null)
+                return idsByNode[activeRoot];
+            return "";
+        }
+    }
+
+    // Rebuilds the menu to show the given menu ID, without running any onSelected actions
+    public void RestoreMenu(string menuId)
+    {
+        if (menuId == CurrentMenuId)
+            return;
+
+        childStack.Clear();
+        activeRoot = null;
+        activeRootChildren = null;
+        RenderChildren(null);
+        ShowBackground(rootBackground);
+
+        if (string.IsNullOrEmpty(menuId))
+            return;
+
+        // Open each level of the path in turn: "0.4.1" -> "0", "0.4", "0.4.1"
+        string[] parts = menuId.Split('.');
+        string path = "";
+        foreach (var part in parts)
+        {
+            path = path.Length == 0 ? part : path + "." + part;
+
+            Node node;
+            if (!nodesById.TryGetValue(path, out node))
+            {
+                Debug.LogWarning("NodeFramework: cannot restore menu " + menuId);
+                return;
+            }
+
+            ApplyNodeClick(node, false);
+        }
     }
 
     // ---------------- RENDERING ----------------
