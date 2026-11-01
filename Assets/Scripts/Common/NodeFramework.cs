@@ -34,6 +34,12 @@ public class NodeFramework : MonoBehaviour
     [Header("Root Background (Optional)")]
     public GameObject rootBackground;
 
+    [Header("Root Nodes Object (Hidden While A Leaf Level Is Open)")]
+    public GameObject rootNodesObject;
+
+    [Header("Back Button (Shown Only While A Leaf Level Is Open)")]
+    public GameObject backButton;
+
     // Networking hooks: when set (by NetworkSync), clicks are sent to the host
     // instead of being applied locally. When null, the menu works offline as before.
     public System.Action<string> onNodeRequested;
@@ -67,6 +73,8 @@ public class NodeFramework : MonoBehaviour
         // Hide everything else
         HideAllChildren();
         ShowBackground(rootBackground);
+        SetBackButtonVisible(false);
+        SetRootNodesVisible(true);
     }
 
     // ---------------- INITIALIZATION ----------------
@@ -252,6 +260,12 @@ public class NodeFramework : MonoBehaviour
         // Always reset child visibility from scratch
         HideAllChildren();
 
+        // Back is only needed while some leaf level is open (null = only roots showing)
+        SetBackButtonVisible(nodesToShow != null);
+
+        // Roots give way to the leaf level; childless roots pass null so they stay visible
+        SetRootNodesVisible(nodesToShow == null);
+
         if (nodesToShow == null)
             return;
 
@@ -260,6 +274,18 @@ public class NodeFramework : MonoBehaviour
             if (node.button != null)
                 node.button.gameObject.SetActive(true);
         }
+    }
+
+    private void SetBackButtonVisible(bool visible)
+    {
+        if (backButton != null)
+            backButton.SetActive(visible);
+    }
+
+    private void SetRootNodesVisible(bool visible)
+    {
+        if (rootNodesObject != null)
+            rootNodesObject.SetActive(visible);
     }
 
     private void HideAllChildren()
