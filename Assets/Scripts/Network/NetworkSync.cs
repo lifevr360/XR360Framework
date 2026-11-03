@@ -25,6 +25,18 @@ public class NetworkSync : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
+        // Spawned from a prefab at runtime, so find this scene's menu and video player
+        if (nodeFramework == null)
+            nodeFramework = FindFirstObjectByType<NodeFramework>();
+        if (videoManager == null)
+            videoManager = FindFirstObjectByType<VideoManager>();
+
+        if (nodeFramework == null || videoManager == null)
+        {
+            Debug.LogError("NetworkSync: no NodeFramework or VideoManager in this scene, nothing will sync.");
+            return;
+        }
+
         nodeFramework.onNodeRequested = RequestNodeClick;
         nodeFramework.onBackRequested = RequestBack;
         videoManager.networkClock = Clock;
@@ -42,6 +54,9 @@ public class NetworkSync : NetworkBehaviour
 
     public override void OnNetworkDespawn()
     {
+        if (nodeFramework == null || videoManager == null)
+            return;
+
         // Back to offline mode: clicks apply locally until we reconnect
         nodeFramework.onNodeRequested = null;
         nodeFramework.onBackRequested = null;
