@@ -1,0 +1,2 @@
+C:\Users\lifev\Documents\Unity OpenXr\fairmont\XR360Framework\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\CMakeLists.txt
+C:\Users\lifev\Documents\Unity OpenXr\fairmont\XR360Framework\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\GameActivity\CMakeLists.txt

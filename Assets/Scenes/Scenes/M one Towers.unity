@@ -2106,7 +2106,7 @@ MonoBehaviour:
               m_Arguments:
                 m_ObjectArgument: {fileID: 0}
                 m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-                m_IntArgument: 74
+                m_IntArgument: 25
                 m_FloatArgument: 0
                 m_StringArgument: 
                 m_BoolArgument: 0
@@ -2239,7 +2239,7 @@ MonoBehaviour:
               m_Arguments:
                 m_ObjectArgument: {fileID: 0}
                 m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-                m_IntArgument: 66
+                m_IntArgument: 24
                 m_FloatArgument: 0
                 m_StringArgument: 
                 m_BoolArgument: 0
@@ -2403,7 +2403,7 @@ MonoBehaviour:
               m_Arguments:
                 m_ObjectArgument: {fileID: 0}
                 m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-                m_IntArgument: 64
+                m_IntArgument: 23
                 m_FloatArgument: 0
                 m_StringArgument: 
                 m_BoolArgument: 0
@@ -2826,8 +2826,8 @@ MonoBehaviour:
   voiceOverAudioSource: {fileID: 0}
   mouseLook: {fileID: 994270547}
   fps: {fileID: 994270546}
-  videoSourceMode: 1
-  rootURL: file:///D:/Out/
+  videoSourceMode: 0
+  rootURL: https://d1aolew625hz0k.cloudfront.net/videos/
   fileExtension: .mp4
   localVideoClips:
   - {fileID: 32900000, guid: 37780fe31ff5be34ea3ed43e5cd016df, type: 3}
@@ -2853,8 +2853,12 @@ MonoBehaviour:
   - {fileID: 32900000, guid: 6d82f98e5769e1345b9425f48d765708, type: 3}
   - {fileID: 32900000, guid: b1458ee04cb585d4b91adb49a80191c6, type: 3}
   - {fileID: 32900000, guid: edaf39322a2d4a547b9784ffb6466f86, type: 3}
+  - {fileID: 32900000, guid: 7e37affd2f03c864487f16229e0927d6, type: 3}
+  - {fileID: 32900000, guid: db66b56a5aa7f1d4c85722ca1d0bb231, type: 3}
+  - {fileID: 32900000, guid: dce96dbf009e82c43aa5c84e3154fae4, type: 3}
   hindiAudioClips: []
   englishAudioClips: []
+  silentVideoIndices: 010000006a000000
 --- !u!328 &654941376
 VideoPlayer:
   m_ObjectHideFlags: 0
@@ -3515,7 +3519,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 124.4, y: -20.970093}
+  m_AnchoredPosition: {x: 124.4, y: -20.970032}
   m_SizeDelta: {x: 1662, y: 275.4745}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!1 &893768621
