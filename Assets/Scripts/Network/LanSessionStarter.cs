@@ -21,6 +21,9 @@ public class LanSessionStarter : MonoBehaviour
     public ushort gamePort = 7777;
     public ushort discoveryPort = 47777;
 
+    [Tooltip("Prefab with NetworkObject + NetworkSync. The host spawns it, so the VR and mobile apps can use different scenes")]
+    public NetworkObject networkSyncPrefab;
+
     [Header("Timing")]
     [Tooltip("Seconds to listen for an existing host before becoming host")]
     public float searchTime = 3f;
@@ -74,10 +77,26 @@ public class LanSessionStarter : MonoBehaviour
         if (networkManager.NetworkConfig.NetworkTransport == null)
             networkManager.NetworkConfig.NetworkTransport = transport;
 
-        // Must stay on: without scene management, NGO 2.x only spawns registered prefabs and
-        // clients discard in-scene NetworkObjects like NetworkSync. Clients that already have
-        // the host's scene loaded reuse it instead of reloading.
-        networkManager.NetworkConfig.EnableSceneManagement = true;
+        if (networkSyncPrefab == null)
+        {
+            SetStatus("No NetworkSync prefab assigned - offline");
+            enabled = false;
+            return;
+        }
+
+        // Off so the VR and mobile apps can run different scenes: nothing is synced by scene,
+        // the host spawns NetworkSync from a prefab both apps have registered
+        networkManager.NetworkConfig.EnableSceneManagement = false;
+
+        if (!networkManager.NetworkConfig.Prefabs.Contains(networkSyncPrefab.gameObject))
+            networkManager.AddNetworkPrefab(networkSyncPrefab.gameObject);
+
+        // A NetworkSync left in the scene would fail to spawn on clients without scene management
+        foreach (var inScene in FindObjectsByType<NetworkSync>(FindObjectsSortMode.None))
+        {
+            Debug.LogWarning("LanSession: removing in-scene NetworkSync '" + inScene.name + "', the host spawns it from the prefab now.");
+            Destroy(inScene.gameObject);
+        }
 
         // Keeps the shared clock accurate over long sessions (video sync relies on it)
         networkManager.NetworkConfig.EnableTimeResync = true;
@@ -160,6 +179,8 @@ public class LanSessionStarter : MonoBehaviour
 
         if (TryStart(networkManager.StartHost))
         {
+            networkSyncPrefab.InstantiateAndSpawn(networkManager);
+
             state = State.Host;
             nextAnnounce = 0;
             SetStatus("HOST");
