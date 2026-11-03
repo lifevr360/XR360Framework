@@ -18,7 +18,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Scenes/JW_Ranthambore.unity
     guid: eb3ff15c3665ab44791f64890ba606b7
   - enabled: 1
-    path: Assets/Scenes/InvestKarnataka/InvestKarnataka.unity
+    path: Assets/Scenes/InvestKarnataka/InvestKarnataka_VR.unity
     guid: a527859f15d79434a96e79ca939ce620
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: bfa1182bd221b4ca89619141f66f1260, type: 2}
