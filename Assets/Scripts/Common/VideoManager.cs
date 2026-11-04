@@ -9,6 +9,8 @@ public class VideoManager : MonoBehaviour
     public enum Language { Hindi, English }
     // DeviceFolder: plays <index><ext> from the app's OBB folder on Android (/sdcard/Android/obb/<package name>/)
     public enum VideoSourceMode { URL, LocalClips, DeviceFolder }
+    // What the 360 sphere shows when it is not a video
+    public enum ImageMode { None, Image, OverUnder }
 
     [Header("References")]
     public VideoPlayer videoPlayer;
@@ -35,6 +37,18 @@ public class VideoManager : MonoBehaviour
     [Tooltip("Place English audio clips here. Slot 0 matches Video 0, Slot 1 matches Video 1, etc.")]
     public List<AudioClip> englishAudioClips;
 
+    [Header("360 Images (Skybox)")]
+    [Tooltip("Skybox used for videos (360UI_Video). Empty = the scene's skybox at start")]
+    public Material videoSkybox;
+    [Tooltip("Skybox for normal 360 images (360UI_Image, 3D Layout: None)")]
+    public Material imageSkybox;
+    [Tooltip("Skybox for over-under 360 images (360UI_Image_OU, 3D Layout: Over Under)")]
+    public Material overUnderSkybox;
+    [Tooltip("ShowImage(0) shows slot 0, ShowImage(1) slot 1, etc.")]
+    public List<Texture> images;
+    [Tooltip("ShowOverUnderImage(0) shows slot 0, ShowOverUnderImage(1) slot 1, etc.")]
+    public List<Texture> overUnderImages;
+
     [Header("Network Sync")]
     [Tooltip("Re-seek when this device drifts further than this (seconds) from the shared timeline")]
     public bool correctDrift = true;
@@ -52,6 +66,10 @@ public class VideoManager : MonoBehaviour
     public int CurrentVideoIndex { get { return currentVideoIndex; } }
     public int LastRequestedIndex { get; private set; } = -1;
     public double LastRequestedStartTime { get; private set; } = -1;
+
+    // The image currently selected (None while a video is selected), read by NetworkSync for late joiners
+    public ImageMode CurrentImageMode { get; private set; } = ImageMode.None;
+    public int CurrentImageIndex { get; private set; } = -1;
     #endregion
 
     #region Private Variables
@@ -60,6 +78,11 @@ public class VideoManager : MonoBehaviour
     private double currentStartTime = -1; // Shared start time of the current video
     private float nextDriftCheck;
     private Quaternion defaultRotation;
+
+    // Runtime copies of the image skyboxes, so setting their texture never edits the material assets
+    private Material videoSkyboxRuntime;
+    private Material imageSkyboxRuntime;
+    private Material overUnderSkyboxRuntime;
     #endregion
 
     #region Unity Methods
@@ -76,6 +99,11 @@ public class VideoManager : MonoBehaviour
             videoPlayer.playOnAwake = false;
             videoPlayer.waitForFirstFrame = true;
         }
+
+        videoSkyboxRuntime = videoSkybox != null ? videoSkybox : RenderSettings.skybox;
+        if (imageSkybox != null) imageSkyboxRuntime = new Material(imageSkybox);
+        if (overUnderSkybox != null) overUnderSkyboxRuntime = new Material(overUnderSkybox);
+        RenderSettings.skybox = videoSkyboxRuntime;
 
         PlayVideo(0); // Play the first video (0) on start
     }
@@ -133,6 +161,10 @@ public class VideoManager : MonoBehaviour
         LastRequestedIndex = videoIndex;
         LastRequestedStartTime = startTime;
 
+        // A video is now the selected content; any image stays visible until the video starts
+        CurrentImageMode = ImageMode.None;
+        CurrentImageIndex = -1;
+
         Debug.Log("Stopped coroutines.");
         StopAllCoroutines();
         StopVideoAndAudio();
@@ -151,6 +183,51 @@ public class VideoManager : MonoBehaviour
         StopAllCoroutines();
         StopVideoAndAudio();
         if (firstvideoPlayer != null) firstvideoPlayer.Stop();
+    }
+
+    // For node On Selected: shows images[index] on the sphere (360UI_Image)
+    public void ShowImage(int index)
+    {
+        ShowImageAt(ImageMode.Image, index);
+    }
+
+    // For node On Selected: shows overUnderImages[index] on the sphere (360UI_Image_OU)
+    public void ShowOverUnderImage(int index)
+    {
+        ShowImageAt(ImageMode.OverUnder, index);
+    }
+
+    public void ShowImageAt(ImageMode mode, int index)
+    {
+        bool overUnder = mode == ImageMode.OverUnder;
+        List<Texture> list = overUnder ? overUnderImages : images;
+        Material skybox = overUnder ? overUnderSkyboxRuntime : imageSkyboxRuntime;
+
+        if (skybox == null)
+        {
+            Debug.LogError("No " + (overUnder ? "Over Under Skybox" : "Image Skybox") + " material assigned on VideoManager.");
+            return;
+        }
+        if (list == null || index < 0 || index >= list.Count || list[index] == null)
+        {
+            Debug.LogError((overUnder ? "Over-under image" : "Image") + " is missing or index is out of bounds for index: " + index);
+            return;
+        }
+
+        // Stop the video (also one still preparing) so it can't take the sphere back
+        StopAllVideos();
+        videoPlayer.Stop();
+        currentVideoIndex = -1;
+        currentStartTime = -1;
+        LastRequestedIndex = -1;
+        LastRequestedStartTime = -1;
+
+        skybox.SetTexture("_MainTex", list[index]);
+        RenderSettings.skybox = skybox;
+
+        CurrentImageMode = mode;
+        CurrentImageIndex = index;
+        Debug.Log("Showing " + (overUnder ? "over-under image " : "image ") + index + ": " + list[index].name);
     }
     #endregion
 
@@ -288,6 +365,10 @@ public class VideoManager : MonoBehaviour
                 if (synced && voiceOverAudioSource != null && videoPlayer.time > 0 && videoPlayer.time < selectedClip.length)
                     voiceOverAudioSource.time = (float)videoPlayer.time;
             }
+
+            // Swap back from an image only now, so the sphere never shows the previous video's last frame
+            if (videoSkyboxRuntime != null)
+                RenderSettings.skybox = videoSkyboxRuntime;
 
             videoPlayer.Play();
             currentVideoIndex = index;

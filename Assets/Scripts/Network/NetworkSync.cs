@@ -20,6 +20,8 @@ public class NetworkSync : NetworkBehaviour
     private NetworkVariable<FixedString64Bytes> menuId = new NetworkVariable<FixedString64Bytes>();
     private NetworkVariable<int> videoIndex = new NetworkVariable<int>(-1);
     private NetworkVariable<double> videoStartTime = new NetworkVariable<double>(-1);
+    private NetworkVariable<int> imageMode = new NetworkVariable<int>((int)VideoManager.ImageMode.None);
+    private NetworkVariable<int> imageIndex = new NetworkVariable<int>(-1);
 
     // ---------------- SPAWN ----------------
 
@@ -97,6 +99,8 @@ public class NetworkSync : NetworkBehaviour
             videoStartTime.Value = start;
         }
 
+        PublishImageState();
+
         ApplyNodeClickRpc(id, nodeFramework.CurrentMenuId, start);
     }
 
@@ -142,6 +146,15 @@ public class NetworkSync : NetworkBehaviour
 
         if (videoManager.CurrentVideoIndex >= 0 && videoManager.videoPlayer.isPlaying)
             AnchorPlayingVideo(videoManager.CurrentVideoIndex);
+
+        PublishImageState();
+    }
+
+    // Host: store which image (if any) is on the sphere; None means the video state applies
+    private void PublishImageState()
+    {
+        imageMode.Value = (int)videoManager.CurrentImageMode;
+        imageIndex.Value = videoManager.CurrentImageIndex;
     }
 
     // Host: a video started without a shared time (e.g. the intro on Start), anchor it now
@@ -159,10 +172,18 @@ public class NetworkSync : NetworkBehaviour
         videoStartTime.Value = start;
     }
 
-    // Late joiner / reconnect: rebuild the host's menu and jump into its video
+    // Late joiner / reconnect: rebuild the host's menu and show its image or jump into its video
     private void ApplySessionState()
     {
         nodeFramework.RestoreMenu(menuId.Value.ToString());
+
+        var mode = (VideoManager.ImageMode)imageMode.Value;
+        if (mode != VideoManager.ImageMode.None)
+        {
+            if (videoManager.CurrentImageMode != mode || videoManager.CurrentImageIndex != imageIndex.Value)
+                videoManager.ShowImageAt(mode, imageIndex.Value);
+            return;
+        }
 
         int index = videoIndex.Value;
         double start = videoStartTime.Value;
