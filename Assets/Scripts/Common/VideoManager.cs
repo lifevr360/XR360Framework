@@ -18,6 +18,8 @@ public class VideoManager : MonoBehaviour
     public AudioSource voiceOverAudioSource;
     public Mouselook mouseLook; // Kept exactly as your original script
     public Transform fps;
+    [Tooltip("Turns the view back to forward whenever a video or image is shown. Empty = found in the scene")]
+    public CameraRecenter cameraRecenter;
 
     [Header("Video Source Settings")]
     public VideoSourceMode videoSourceMode = VideoSourceMode.URL; // Toggle between URL and Local
@@ -100,12 +102,15 @@ public class VideoManager : MonoBehaviour
             videoPlayer.waitForFirstFrame = true;
         }
 
+        if (cameraRecenter == null)
+            cameraRecenter = FindFirstObjectByType<CameraRecenter>();
+
         videoSkyboxRuntime = videoSkybox != null ? videoSkybox : RenderSettings.skybox;
         if (imageSkybox != null) imageSkyboxRuntime = new Material(imageSkybox);
         if (overUnderSkybox != null) overUnderSkyboxRuntime = new Material(overUnderSkybox);
         RenderSettings.skybox = videoSkyboxRuntime;
 
-        PlayVideo(0); // Play the first video (0) on start
+        ShowImage(0); // Show the first image (0) on start
     }
 
     private void Update()
@@ -224,6 +229,7 @@ public class VideoManager : MonoBehaviour
 
         skybox.SetTexture("_MainTex", list[index]);
         RenderSettings.skybox = skybox;
+        RecenterView();
 
         CurrentImageMode = mode;
         CurrentImageIndex = index;
@@ -232,6 +238,14 @@ public class VideoManager : MonoBehaviour
     #endregion
 
     #region Private Helper Methods & Coroutines
+    private void RecenterView()
+    {
+        if (cameraRecenter != null)
+            cameraRecenter.Recenter();
+        else if (mouseLook != null)
+            mouseLook.ResetRotation(defaultRotation); // original behaviour when no CameraRecenter is in the scene
+    }
+
     private string GetVideoURL(int index)
     {
         // Direct URL generation using the index (From your original script)
@@ -383,9 +397,8 @@ public class VideoManager : MonoBehaviour
             else
                 Debug.Log("Playing video from URL: " + videoPlayer.url);
 
-            // Reset player orientation after load finish (From your original script)
-            if (mouseLook != null)
-                mouseLook.ResetRotation(defaultRotation);
+            // Reset player orientation once the new video is on screen
+            RecenterView();
         }
         else
         {

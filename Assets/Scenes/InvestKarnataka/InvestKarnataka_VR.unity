@@ -4636,7 +4636,7 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 654941375}
             m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-            m_MethodName: PlayVideo
+            m_MethodName: ShowImage
             m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -4660,7 +4660,7 @@ MonoBehaviour:
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
               m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-              m_IntArgument: 0
+              m_IntArgument: 1
               m_FloatArgument: 0
               m_StringArgument: 
               m_BoolArgument: 0
@@ -4674,12 +4674,12 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 654941375}
             m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-            m_MethodName: ShowOverUnderImage
+            m_MethodName: ShowImage
             m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
               m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-              m_IntArgument: 0
+              m_IntArgument: 2
               m_FloatArgument: 0
               m_StringArgument: 
               m_BoolArgument: 0
@@ -4712,7 +4712,7 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 654941375}
             m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-            m_MethodName: PlayVideo
+            m_MethodName: ShowImage
             m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -4731,7 +4731,7 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 654941375}
             m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-            m_MethodName: PlayVideo
+            m_MethodName: ShowImage
             m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -4750,7 +4750,7 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 654941375}
             m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-            m_MethodName: PlayVideo
+            m_MethodName: ShowImage
             m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -4788,7 +4788,7 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 654941375}
             m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-            m_MethodName: PlayVideo
+            m_MethodName: ShowImage
             m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -4807,7 +4807,7 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 654941375}
             m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-            m_MethodName: PlayVideo
+            m_MethodName: ShowImage
             m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -4819,19 +4819,7 @@ MonoBehaviour:
             m_CallState: 2
     onSelected:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 654941375}
-          m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-          m_MethodName: PlayVideo
-          m_Mode: 3
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 31
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
   - name: PLENARY HALL
     button: {fileID: 1911393855}
     background: {fileID: 0}
@@ -4864,7 +4852,7 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 654941375}
             m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-            m_MethodName: PlayVideo
+            m_MethodName: ShowImage
             m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -4895,19 +4883,7 @@ MonoBehaviour:
             m_CallState: 2
     onSelected:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 654941375}
-          m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-          m_MethodName: PlayVideo
-          m_Mode: 3
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 32
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
   - name: COUNTRY PAVILION
     button: {fileID: 1011499013}
     background: {fileID: 0}
@@ -4921,7 +4897,7 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 654941375}
             m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-            m_MethodName: PlayVideo
+            m_MethodName: ShowImage
             m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -4940,7 +4916,7 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 654941375}
             m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-            m_MethodName: PlayVideo
+            m_MethodName: ShowImage
             m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -4952,19 +4928,7 @@ MonoBehaviour:
             m_CallState: 2
     onSelected:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 654941375}
-          m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-          m_MethodName: PlayVideo
-          m_Mode: 3
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 33
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
   - name: KARNATAKA PAVILION
     button: {fileID: 1528039368}
     background: {fileID: 0}
@@ -4978,7 +4942,7 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 654941375}
             m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-            m_MethodName: PlayVideo
+            m_MethodName: ShowImage
             m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -4997,7 +4961,7 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 654941375}
             m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-            m_MethodName: PlayVideo
+            m_MethodName: ShowImage
             m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -5016,7 +4980,7 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 654941375}
             m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-            m_MethodName: PlayVideo
+            m_MethodName: ShowImage
             m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -5035,12 +4999,12 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 654941375}
             m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-            m_MethodName: PlayVideo
+            m_MethodName: ShowOverUnderImage
             m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
               m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-              m_IntArgument: 17
+              m_IntArgument: 42
               m_FloatArgument: 0
               m_StringArgument: 
               m_BoolArgument: 0
@@ -5054,7 +5018,7 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 654941375}
             m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-            m_MethodName: PlayVideo
+            m_MethodName: ShowImage
             m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -5066,19 +5030,7 @@ MonoBehaviour:
             m_CallState: 2
     onSelected:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 654941375}
-          m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-          m_MethodName: PlayVideo
-          m_Mode: 3
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 34
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
   - name: SEMINAR HALLS
     button: {fileID: 1718074233}
     background: {fileID: 0}
@@ -5092,7 +5044,7 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 654941375}
             m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-            m_MethodName: PlayVideo
+            m_MethodName: ShowImage
             m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -5111,7 +5063,7 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 654941375}
             m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-            m_MethodName: PlayVideo
+            m_MethodName: ShowImage
             m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -5130,7 +5082,7 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 654941375}
             m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-            m_MethodName: PlayVideo
+            m_MethodName: ShowImage
             m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -5149,7 +5101,7 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 654941375}
             m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-            m_MethodName: PlayVideo
+            m_MethodName: ShowImage
             m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -5168,7 +5120,7 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 654941375}
             m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-            m_MethodName: PlayVideo
+            m_MethodName: ShowImage
             m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -5183,7 +5135,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 654941375}
           m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-          m_MethodName: PlayVideo
+          m_MethodName: ShowImage
           m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -5202,7 +5154,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 654941375}
           m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-          m_MethodName: PlayVideo
+          m_MethodName: ShowImage
           m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -5225,7 +5177,7 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 654941375}
             m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-            m_MethodName: PlayVideo
+            m_MethodName: ShowImage
             m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -5244,7 +5196,7 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 654941375}
             m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-            m_MethodName: PlayVideo
+            m_MethodName: ShowImage
             m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -5256,19 +5208,7 @@ MonoBehaviour:
             m_CallState: 2
     onSelected:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 654941375}
-          m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-          m_MethodName: PlayVideo
-          m_Mode: 3
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 37
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
   - name: MEDIA ROOM
     button: {fileID: 1300108814}
     background: {fileID: 0}
@@ -5282,7 +5222,7 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 654941375}
             m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-            m_MethodName: PlayVideo
+            m_MethodName: ShowImage
             m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -5301,7 +5241,7 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 654941375}
             m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-            m_MethodName: PlayVideo
+            m_MethodName: ShowImage
             m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -5328,27 +5268,63 @@ MonoBehaviour:
         children: []
         onSelected:
           m_PersistentCalls:
-            m_Calls: []
+            m_Calls:
+            - m_Target: {fileID: 654941375}
+              m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
+              m_MethodName: ShowOverUnderImage
+              m_Mode: 3
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 43
+                m_FloatArgument: 0
+                m_StringArgument: 
+                m_BoolArgument: 0
+              m_CallState: 2
       - name: VIEW 2
         button: {fileID: 1272653958}
         background: {fileID: 0}
         children: []
         onSelected:
           m_PersistentCalls:
-            m_Calls: []
+            m_Calls:
+            - m_Target: {fileID: 654941375}
+              m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
+              m_MethodName: ShowOverUnderImage
+              m_Mode: 3
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 27
+                m_FloatArgument: 0
+                m_StringArgument: 
+                m_BoolArgument: 0
+              m_CallState: 2
       - name: VIEW 3
         button: {fileID: 766355767}
         background: {fileID: 0}
         children: []
         onSelected:
           m_PersistentCalls:
-            m_Calls: []
+            m_Calls:
+            - m_Target: {fileID: 654941375}
+              m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
+              m_MethodName: ShowOverUnderImage
+              m_Mode: 3
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 44
+                m_FloatArgument: 0
+                m_StringArgument: 
+                m_BoolArgument: 0
+              m_CallState: 2
       onSelected:
         m_PersistentCalls:
           m_Calls:
           - m_Target: {fileID: 654941375}
             m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-            m_MethodName: PlayVideo
+            m_MethodName: ShowOverUnderImage
             m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -5367,7 +5343,7 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 654941375}
             m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-            m_MethodName: PlayVideo
+            m_MethodName: ShowOverUnderImage
             m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -5386,7 +5362,7 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 654941375}
             m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-            m_MethodName: PlayVideo
+            m_MethodName: ShowOverUnderImage
             m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -5405,7 +5381,7 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 654941375}
             m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-            m_MethodName: PlayVideo
+            m_MethodName: ShowOverUnderImage
             m_Mode: 3
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -5427,7 +5403,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 654941375}
           m_TargetAssemblyTypeName: VideoManager, Assembly-CSharp
-          m_MethodName: PlayVideo
+          m_MethodName: ShowOverUnderImage
           m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -6338,6 +6314,7 @@ GameObject:
   - component: {fileID: 654941376}
   - component: {fileID: 654941375}
   - component: {fileID: 654941377}
+  - component: {fileID: 654941378}
   m_Layer: 0
   m_Name: VideoManager
   m_TagString: Untagged
@@ -6377,62 +6354,115 @@ MonoBehaviour:
   voiceOverAudioSource: {fileID: 654941377}
   mouseLook: {fileID: 0}
   fps: {fileID: 0}
+  cameraRecenter: {fileID: 654941378}
   videoSourceMode: 1
   rootURL: file:///C:/Users/lifev/Documents/VR out/
   fileExtension: .mp4
   localVideoClips:
-  - {fileID: 32900000, guid: 1824138a6c8c5244b9ff273590db39da, type: 3}
-  - {fileID: 32900000, guid: 005d359d95b926545a69d5829e207dcb, type: 3}
-  - {fileID: 32900000, guid: 642d7fa1522f8cf43a764c35d46706a9, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 32900000, guid: b7a1c4e9851d5804387c8df68cb4d43b, type: 3}
-  - {fileID: 32900000, guid: 7851e92bfd9578e4bb483ee56ca1f849, type: 3}
-  - {fileID: 32900000, guid: f07e89076ffe17f469cd700d773f83e8, type: 3}
-  - {fileID: 32900000, guid: 3c21934c551ef6748a9392675348ccb6, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 32900000, guid: 9fbc5f3ca51b9fa43ac44291415669d4, type: 3}
-  - {fileID: 32900000, guid: b27d430518565ce489b27ae5ffe1b20c, type: 3}
-  - {fileID: 32900000, guid: a9790af8dee755e49b5dd1accee3a641, type: 3}
-  - {fileID: 32900000, guid: 592c377486d5f594ab478bdbb51d56bf, type: 3}
-  - {fileID: 32900000, guid: 3a8584cf649a98d4889373bbabd5af14, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 32900000, guid: 7adf5796595be4a4589b958c0802391b, type: 3}
-  - {fileID: 32900000, guid: 03359571a33870b42bcf345d84104271, type: 3}
+  - {fileID: 0}
   - {fileID: 32900000, guid: 59e27e662bcac3646b5304d0cdafdd74, type: 3}
-  - {fileID: 32900000, guid: 152d106d687a42c45b51325c6ad41b2a, type: 3}
-  - {fileID: 32900000, guid: e3c27054ea1927f4787f20c58e550266, type: 3}
-  - {fileID: 32900000, guid: d241715020fc75942bbb07da758d2be8, type: 3}
-  - {fileID: 32900000, guid: 8dfb14f98173e3444b6e06eb4e3db348, type: 3}
-  - {fileID: 32900000, guid: 586cfb35665a4194caac912de743ff05, type: 3}
-  - {fileID: 32900000, guid: 02cf18caf2e99934cbd170cb6047052a, type: 3}
-  - {fileID: 32900000, guid: 42bebba8ef4f8564094182fcb30d0b08, type: 3}
-  - {fileID: 32900000, guid: 7d1c14d0c9d320a41b4735b9dd037a9d, type: 3}
-  - {fileID: 32900000, guid: ec960e50d085e9e46b0f772b4f35b087, type: 3}
-  - {fileID: 32900000, guid: c7453e7fc007d1f4a9f6c73bc3d551fc, type: 3}
-  - {fileID: 32900000, guid: 1afe778470f5b6c4ca2aed24e5326bd6, type: 3}
-  - {fileID: 32900000, guid: 1824138a6c8c5244b9ff273590db39da, type: 3}
-  - {fileID: 32900000, guid: bbd867cf03642594fb5f9efe3449429a, type: 3}
-  - {fileID: 32900000, guid: 45f2fe7e438b92b49a0d8fd37a5a7376, type: 3}
-  - {fileID: 32900000, guid: 0d7b03d72d45246478a6d21a9790d5cd, type: 3}
-  - {fileID: 32900000, guid: 15c43877140893e40ae95de34a84ba07, type: 3}
-  - {fileID: 0}
-  - {fileID: 32900000, guid: ac3bb4927003c0a4d866869239ae8dca, type: 3}
-  - {fileID: 32900000, guid: d14e45452107753418da03c15f9d5838, type: 3}
-  - {fileID: 32900000, guid: a331c7e0cb70a9a4186bef1184ab73f0, type: 3}
-  - {fileID: 32900000, guid: ba7ff2a8f9260834e8bbb402188ebfd2, type: 3}
-  - {fileID: 32900000, guid: a39b7554699b6914cb60a9ddeb493b0c, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 32900000, guid: 216049adb13768444b72090bfe51d920, type: 3}
-  - {fileID: 32900000, guid: 7dfe237b13fd9ed408c055ac09db0071, type: 3}
-  - {fileID: 0}
   hindiAudioClips: []
   englishAudioClips: []
   videoSkybox: {fileID: 2100000, guid: 39cb82212bd1d074db0f371b44898b57, type: 2}
   imageSkybox: {fileID: 2100000, guid: 11e1a59be34039245bf52fc3fb5a37c1, type: 2}
   overUnderSkybox: {fileID: 2100000, guid: 5623b01e91fc10d42a68cf4f3d7fa776, type: 2}
   images:
-  - {fileID: 2800000, guid: af20571ee7ef5ba4abcbd41f4aad8253, type: 3}
+  - {fileID: 2800000, guid: f604f1ab03bb33c4fa022cb1477d81fd, type: 3}
+  - {fileID: 2800000, guid: be839e02ac58228419af2c15e99b5641, type: 3}
+  - {fileID: 2800000, guid: 41f4ccf941a990a4e931f8004dafcee9, type: 3}
+  - {fileID: 0}
+  - {fileID: 2800000, guid: 1e263bf54a248b34d9b9ab1ea3ea034c, type: 3}
+  - {fileID: 2800000, guid: e76b21eeaf4a26040b7d976e96583451, type: 3}
+  - {fileID: 2800000, guid: f925ec3a17f2cc34f842cb43910f2f3c, type: 3}
+  - {fileID: 0}
+  - {fileID: 2800000, guid: 55b12c51f8d905f47a5d77ca8f71b052, type: 3}
+  - {fileID: 2800000, guid: fb476e3f2a2c3e74cadb3943a1728db3, type: 3}
+  - {fileID: 2800000, guid: 9f4847c6ce08c14408f98c0302461b74, type: 3}
+  - {fileID: 2800000, guid: 938330ffb30494c47b5e05819147f109, type: 3}
+  - {fileID: 0}
+  - {fileID: 2800000, guid: 018e5230a69116b4bb20c92a42a29c02, type: 3}
+  - {fileID: 0}
+  - {fileID: 2800000, guid: 6257fe132a66ee64f95adf880699bad5, type: 3}
+  - {fileID: 2800000, guid: 137febdbaa5ad32498bec9861549d554, type: 3}
+  - {fileID: 2800000, guid: 642a7674fcfaefb4a8011113a0d7dc9c, type: 3}
+  - {fileID: 2800000, guid: 774b78a11284959478f0e39a405c6d7c, type: 3}
+  - {fileID: 2800000, guid: 99ed88ddc77fbd340af9dcc62ee620f8, type: 3}
+  - {fileID: 2800000, guid: 4ca06c5f44de2644a9e4ec8e73956ae6, type: 3}
+  - {fileID: 2800000, guid: 232e8dbe59f1d794e8a7c14415ea5e1a, type: 3}
+  - {fileID: 2800000, guid: a924eca5b4ebd4547ab63c34929cc2ae, type: 3}
+  - {fileID: 2800000, guid: a3e0fb9cc81728645aa8cf833633565e, type: 3}
+  - {fileID: 2800000, guid: 6feff5d5a9d9f2741a0724a18d47c16a, type: 3}
+  - {fileID: 2800000, guid: dea6e27de57025e46b3384cf401d4cd2, type: 3}
+  - {fileID: 2800000, guid: f0647a3ca53fe024bb966d614ebb5703, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 2800000, guid: 62eacb84cdba52f488e418935007ffd4, type: 3}
+  - {fileID: 2800000, guid: 4e6966fe73c4abc41bd3073e3880e568, type: 3}
   overUnderImages:
-  - {fileID: 2800000, guid: c8910ca1063e1bd4ab7838f2f8453e61, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 2800000, guid: f0eace1884a6ace46bac2b23094e18d1, type: 3}
+  - {fileID: 2800000, guid: 035e1d6e8cda09541886aa01e02c4dc1, type: 3}
+  - {fileID: 2800000, guid: 604233306fa23d94c80eceff2fa6fe95, type: 3}
+  - {fileID: 2800000, guid: ac5ee911a9a413b47ae4662de2a7be31, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 2800000, guid: 4e6966fe73c4abc41bd3073e3880e568, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 2800000, guid: bd50dc03f3fd29a4f89e03b96d408567, type: 3}
+  - {fileID: 0}
+  - {fileID: 2800000, guid: 534b7054ffb037641af463fd86c6a1e4, type: 3}
+  - {fileID: 2800000, guid: acd3576686cc6104aad0dd63c45f648f, type: 3}
+  - {fileID: 2800000, guid: 9db911eece8d4dd42baf751c6626df91, type: 3}
   correctDrift: 1
   driftTolerance: 0.5
   driftCheckInterval: 2
@@ -6468,7 +6498,7 @@ VideoPlayer:
   m_ControlledAudioTrackCount: 1
   m_PlayOnAwake: 0
   m_SkipOnDrop: 1
-  m_Looping: 0
+  m_Looping: 1
   m_WaitForFirstFrame: 1
   m_FrameReadyEventEnabled: 0
   m_VideoShaders: []
@@ -6569,6 +6599,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &654941378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 654941373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c1e7a3f9b2d4e6a8f0c1d2e3b4a5968, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraRecenter
+  head: {fileID: 0}
+  rig: {fileID: 520812439}
+  mouseLook: {fileID: 0}
+  recenterPosition: 1
 --- !u!1 &668181781
 GameObject:
   m_ObjectHideFlags: 0
